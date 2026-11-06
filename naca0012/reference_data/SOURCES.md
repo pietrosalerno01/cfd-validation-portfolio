@@ -15,8 +15,8 @@ Site: NASA Turbulence Modeling Resource, https://tmbwg.github.io/turbmodels/
 | File | Content | Conditions |                                                                 
 |---|---|---|
 | CLCD_Ladson_expdata.dat | experimental CL, CD (Ladson) | M = 0.15, Re = 6e6, forced transition |             
-| CP_Gregory_expdata.dat | experimental Cp (Gregory & O'Reilly) | Re = 2.88e6, digitized, upper surface only |  
-| CP_Ladson.dat | experimental Cp (Ladson, Hill & Johnson) | M = 0.3, low-aspect-ratio test |                
+| CP_Gregory_expdata.dat | experimental Cp (Gregory & O'Reilly) | Re = 2.88e6, alpha = 0, digitized from photocopy (approximate), upper surface only |
+| CP_Ladson.dat | experimental Cp (Ladson, Hill & Johnson) | M = 0.3, Re = 6e6, free transition; model aspect ratio 1.333 (may not be fully 2D) |             
 | 0012.mccroskeydata.cl.dat | CL-alpha best fit (McCroskey) | compilation of several experiments |          
 | n0012{clcd,cp,cf}_cfl3d_sa.dat | CFL3D SA results | 897x257 grid, point vortex on |
 | n0012{clcd,cp,cf}_cfl3d_sst.dat | CFL3D SST results | 897x257 grid, point vortex on |
