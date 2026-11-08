@@ -1,0 +1,42 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createPatchDict;
+}
+
+pointSync false;            // no coupled (cyclic) patches here
+
+patches
+(
+    {
+        name    airfoil;            // final patch name (used later in 0/ and forceCoeffs)
+        patchInfo
+        {
+            type    wall;           // required for wall functions, yPlus, wallShearStress
+        }
+        constructFrom set;          // build the patch from a faceSet
+        set     airfoilFaces;
+    }
+    
+    {
+        name    farfield;
+        patchInfo
+        {
+            type    patch;          // generic boundary
+        }
+        constructFrom set;
+        set     farfieldFaces;
+    }
+
+    {
+        name    frontAndBack;
+        patchInfo
+        {
+            type    empty;      // unresolved direction (y planes in 2D)
+        }
+        constructFrom set;
+        set     frontAndBackFaces;
+    }
+);

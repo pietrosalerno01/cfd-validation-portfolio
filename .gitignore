@@ -39,3 +39,7 @@ log.*
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# generated meshes (rebuild with naca0012/mesh/convertGrid.sh)
+/naca0012/cases/mesh_L*/
+/naca0012/cases/meshTest_L6/

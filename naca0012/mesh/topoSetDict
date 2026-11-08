@@ -1,0 +1,93 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+actions
+(
+    // 1) faces with normal +y
+    {
+        name    frontAndBackFaces;   // name of the set (you choose it)
+        type    faceSet;             // set of faces (not cells, not points)
+        action  new;                 // create the set from scratch
+        source  normalToFace;        // select by face normal
+        normal  (0 1 0);
+        cos     0.01;                // |1 - n.normal| < 0.01  ->  ~8 deg
+    }
+
+    // 2) add faces with normal -y (same set name, action add)
+    {
+        name    frontAndBackFaces;
+        type    faceSet;
+        action  add;
+        source  normalToFace;
+        normal  (0 -1 0);
+        cos     0.01;
+    }
+
+    // 3) keep only boundary faces (intersection with defaultFaces)
+    {
+        name    frontAndBackFaces;
+        type    faceSet;
+        action  subset;
+        source  patchToFace;
+        patch   defaultFaces;
+    }
+
+    // 4) airfoilFaces
+    {
+        name    airfoilFaces;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        box     (-1 -1.1 -1.06) (2 0.1 1.06);  // (xmin ymin zmin) (xmax ymax zmax)   
+    }
+
+    // 4.1) subset to keep only boundary faces
+    {
+        name    airfoilFaces;
+        type    faceSet;
+        action  subset;
+        source  patchToFace;
+        patch   defaultFaces;
+    }
+
+    // 4.2) subtract to delete +-y faces from boundary cells 
+    {
+        name    airfoilFaces;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        set     frontAndBackFaces;
+    }
+
+    // 5) farfieldFaces
+    {
+        name    farfieldFaces;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        patch     defaultFaces;
+    }
+
+    // 5.1) subtract to delete +-y faces 
+    {
+        name    farfieldFaces;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        set     frontAndBackFaces;
+    }
+
+    // 5.2) subtract airfoilFaces
+    {
+        name    farfieldFaces;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        set     airfoilFaces;
+    }
+);
