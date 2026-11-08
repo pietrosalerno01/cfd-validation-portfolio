@@ -35,11 +35,11 @@ rm -rf "$caseDir/constant"
 plot3dToFoam -noBlank "$grid" > log.plot3dToFoam 2>&1
 echo "Converted $grid to OpenFOAM format"
 topoSet > log.topoSet 2>&1
-echo "Created topoSet for airfoil and farfield patches"
+echo "Created faceSets airfoilFaces, farfieldFaces, frontAndBackFaces"
 createPatch -overwrite > log.createPatch 2>&1
-echo "Created patches for airfoil and farfield"
+echo "Created patches airfoil, farfield, frontAndBack"
 checkMesh > log.checkMesh 2>&1
-echo "Mesh level $level created in $caseDir"
+echo "checkMesh done (see log.checkMesh)"
 
 # ---- 5. Automatic verification -----------------------------------------------
 check () {                       # define a function named "check"
