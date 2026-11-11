@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Absolute tolerances well below residualControl (1e-8): otherwise the
+// linear solvers stop iterating before the run-level criterion is reached.
+// relTol 0.1 keeps the cost per outer iteration low.
+
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        tolerance       1e-10;
+        relTol          0.1;
+        smoother        GaussSeidel;
+    }
+
+    U
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         2;
+        tolerance       1e-10;
+        relTol          0.1;
+    }
+
+    nuTilda
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         2;
+        tolerance       1e-10;
+        relTol          0.1;
+    }
+}
+
+SIMPLE
+{
+    // ...nNonOrthogonalCorrectors as before...
+
+    // SIMPLEC (consistent yes, U 0.9) showed a slowly growing mode in the
+    // wake on L6 (Uz, p residuals x10 over 3500 iterations); plain SIMPLE
+    // with Patankar-type relaxation (p + U ~ 1) is stable.
+    consistent      no;
+    
+    residualControl
+    {
+        p               1e-8;
+        U               1e-8;
+        nuTilda         1e-8;
+    }
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p           0.3;
+    }
+    equations
+    {
+        U           0.7;
+        nuTilda     0.7;
+    }
+}
+
+
+// ************************************************************************* //

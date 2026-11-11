@@ -1,0 +1,16 @@
+// caseParameters — single source of truth for flow conditions
+Uinf        1;
+chord       1;
+Re          6e6;
+alphaDeg    0;
+Minf        0.15;           // only for SST conversion
+
+nuInf       #eval{ $Uinf * $chord / $Re };
+Ux          #eval{ $Uinf * cos(degToRad($alphaDeg)) };
+Uz          #eval{ $Uinf * sin(degToRad($alphaDeg)) };
+nuTildaInf  #eval{ $nuInf * 3 };
+nutInf      #eval{ $nuTildaInf * pow($nuTildaInf / $nuInf , 3) / (pow($nuTildaInf / $nuInf , 3) + pow(7.1, 3)) };
+
+aInf        #eval{ $Uinf / $Minf };
+kInf        #eval{ 9e-9 * pow(( $Uinf / $Minf), 2)};            // from n0012*_cfl3d_sst.dat, row 2-3
+omegaInf    #eval{ 1e-6 * pow(( $Uinf / $Minf), 2) / $nuInf};   // from n0012*_cfl3d_sst.dat, row 2-3
